@@ -4,48 +4,50 @@
 angular.module('NarrowItDownApp', [])
 .controller('NarrowItDownController', NarrowItDownController)
 .service('MenuSearchService', MenuSearchService)
-.directive('foundItems', FoundItems)
+.directive('foundItems', FoundItemsDirective)
 .constant('ApiBasePath', "http://davids-restaurant.herokuapp.com");
 
-/*The list should be displayed using this directive which takes the found array of items specified on it as an attribute (think one-way binding with '<').
-To implement the functionality of the "Don't want this one!" button, the directive should also provide an on-remove attribute that will use function reference binding to invoke the parent controller
-removal an item from the found array based on an index into the found array. The index should be passed in from the directive to the controller.
-(Note that we implemented almost identical type of behavior in the Lecture 30 Part 2, so as long as you understood that code, it should be very close to copy/paste).
-In the NarrowItDownController, simply remove that item from the found array. You can do that using the Array's splice() method. For example, to remove an item with the index of 3 from the found array,
-you would call found.splice(3, 1);.*/
-
-function FoundItems() {
+function FoundItemsDirective() {
   var ddo = {
-    templateUrl: 'listFound.html',
+    restrict:'AE',
+    templateUrl: 'foundItems.html',
     scope: {
       items: '<',
       onRemove: '&'
     },
-    controllerAs: 'nid'
+    controller: FoundItemsDirectiveController,
+    controllerAs: 'found',
+    bindToController: true
   };
 
   return ddo;
 }
 
+function FoundItemsDirectiveController() {
+  var found = this;
+
+  found.emptyList = function () {
+    return found.items && found.items.length === 0;
+  };
+}
+
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
-  var nid = this;
+  var narrowItDownController = this;
 
-  nid.searchTerm = "";
-  nid.items = [];
+  narrowItDownController.searchTerm = "";
+  narrowItDownController.items = [];
 
-  nid.getItems = function () {
-    nid.found = MenuSearchService.getMatchedMenuItems(nid.searchTerm);
-    nid.found.then(function (data) {
-      nid.items = data;
+  narrowItDownController.getItems = function () {
+    narrowItDownController.found = MenuSearchService.getMatchedMenuItems(narrowItDownController.searchTerm);
+    narrowItDownController.found.then(function (data) {
+      narrowItDownController.items = data;
     });
-  }
-
-  nid.removeItem = function (itemIndex) {
-    shoppingList.removeItem(itemIndex);
   };
 
-  return nid;
+  narrowItDownController.removeItem = function (itemIndex) {
+    MenuSearchService.removeItem(narrowItDownController.items, itemIndex);
+  };
 };
 
 MenuSearchService.$inject=['$http', 'ApiBasePath'];
@@ -57,7 +59,7 @@ function MenuSearchService($http, ApiBasePath) {
       method: "GET",
       url: (ApiBasePath + "/menu_items.json")
     }).then(function (result) {
-      var foundItems = [];
+      var  foundItems = [];
       result.data.menu_items.forEach(function(entry) {
         if(entry.description.includes(searchTerm)){
           foundItems.push(entry);
@@ -67,6 +69,10 @@ function MenuSearchService($http, ApiBasePath) {
     }).catch(function (error) {
       console.log("Something went terribly wrong. Error: " + error);
     });
+  };
+
+  service.removeItem = function (items, index) {
+    return items.splice(index, 1);
   };
 };
 

@@ -1,0 +1,26 @@
+<br/>
+<br/>
+<div>
+  <h3>Found Items</h3>
+  <table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Short Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+          <tr ng-repeat="item in found.items">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.short_name}}</td>
+            <td>{{item.description}}</td>
+            <td><button ng-click="found.onRemove({index: $index});">Don't want this one!</button></td>
+          </tr>
+        </tbody>
+    </thead>
+  </table>
+</div>
+<div class="error" ng-if="found.emptyList()">Nothing found</div>
