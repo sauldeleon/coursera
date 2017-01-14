@@ -1,0 +1,104 @@
+<div class="container">
+  <fieldset>
+    <legend style="color:white;">Sign Up</legend>
+    <form name='signUpForm' novalidate>
+
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type="text" class="form-control" name="firstname" placeholder="First name"
+              ng-model="signUpCtrl.user.firstname"
+              required>
+              <span
+                ng-if="signUpForm.firstname.$error.required && signUpForm.firstname.$touched">
+                This field is required
+              </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="text" class="form-control" name="lastname" placeholder="Last name"
+              ng-model="signUpCtrl.user.lastname"
+              required>
+              <span
+                ng-if="signUpForm.lastname.$error.required && signUpForm.lastname.$touched">
+                This field is required
+              </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Email"
+              ng-model="signUpCtrl.user.email"
+              required>
+              <span ng-if="signUpForm.email.$invalid && signUpForm.email.$touched">
+                Must be a valid email address: handle@domain format
+              </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" name="phone" placeholder="Phone ###-###-####"
+              ng-model="signUpCtrl.user.phone"
+              pattern="(\d{3})-(\d{3})-(\d{4})">
+            <span ng-if="signUpForm.phone.$invalid && signUpForm.phone.$touched">
+              Phone must be in the format ###-###-####.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <div class="form-group">
+            <label for="favorite">Favorite Menu Item</label>
+            <input type="text" class="form-control" name="favorite" placeholder="Favorite Dish"
+              ng-model="signUpCtrl.user.favorite">
+            <span ng-if="signUpCtrl.error">
+              No such menu number exists.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <div class="form-group">
+            <label for="phone">Favorite menu dish</label>
+            <select name="favorite" class="form-control"
+              ng-model="signUpCtrl.user.favorite"
+              ng-options="menuItem.name for menuItem in signUpCtrl.menuItems.menu_items"
+              required>
+            </select>
+            <span ng-if="signUpForm.favorite.$invalid && signUpForm.favorite.$touched">
+              You must select one favorite dish.
+            </span>
+          </div>
+        </div>
+      </div> -->
+
+      <button class="btn btn-default"
+        ng-disabled="signUpForm.$invalid"
+        ng-click="signUpCtrl.submit()">Sign Up!
+      </button>
+
+    </form>
+  </fieldset>
+
+  <div ng-if="signUpCtrl.completed">
+     Your information has been saved
+  </div>
+</div>
