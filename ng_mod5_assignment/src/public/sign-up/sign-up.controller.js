@@ -21,6 +21,10 @@ function SignUpController(MenuService, SignUpService) {
           SignUpService.user = $ctrl.user;
         }
       })
+    }else{
+      $ctrl.completed = true;
+      $ctrl.error = false;
+      SignUpService.user = $ctrl.user;
     }
   };
 }

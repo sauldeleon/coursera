@@ -1,1 +1,28 @@
-<h1>My Info</h1>
+<div class="container">
+  <div class="row">
+    <h1>My Personal Info</h1>
+    <div ng-if="myInfoCtrl.existData">
+      <div class="col-xs-12">
+        <strong class="text-uppercase">First name:</strong> {{myInfoCtrl.user.firstname}}
+      </div>
+      <div class="col-xs-12">
+        <strong class="text-uppercase">Last name:</strong> {{myInfoCtrl.user.lastname}}
+      </div>
+      <div class="col-xs-12">
+        <strong class="text-uppercase">Phone number:</strong> {{myInfoCtrl.user.phone}}
+      </div>
+      <br>
+      <div class="col-xs-12" ng-if="myInfoCtrl.menuItemExists">
+        <p>
+          <strong class="text-uppercase">My favorite dish</strong>
+          <img class="img-responsive" width="250" height="150" ng-src="{{myInfoCtrl.basePath}}/images/{{myInfoCtrl.menuItem.short_name}}.jpg" alt="{{myInfoCtrl.menuItem.name}}"><br>
+          {{myInfoCtrl.menuItem.name}}<br>
+          {{myInfoCtrl.menuItem.description}}
+        </p>
+      </div>
+    </div>
+    <div ng-if="!myInfoCtrl.existData">
+      Not Signed Up Yet. <a ui-sref="public.signup">Sign up Now!</a>
+    </div>
+  </div>
+</div>
